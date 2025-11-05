@@ -6,10 +6,7 @@ import 'package:memeapp/models/meme_post.dart';
 class CommentsSheet extends StatefulWidget {
   final MemePost post;
 
-  const CommentsSheet({
-    super.key,
-    required this.post,
-  });
+  const CommentsSheet({super.key, required this.post});
 
   @override
   State<CommentsSheet> createState() => _CommentsSheetState();
@@ -68,7 +65,8 @@ class _CommentsSheetState extends State<CommentsSheet> {
             child: ListView.builder(
               padding: const EdgeInsets.all(16),
               itemCount: _comments.length,
-              itemBuilder: (context, index) => _buildCommentItem(_comments[index]),
+              itemBuilder: (context, index) =>
+                  _buildCommentItem(_comments[index]),
             ),
           ),
 
@@ -87,19 +85,14 @@ class _CommentsSheetState extends State<CommentsSheet> {
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(
-            color: Colors.white.withOpacity(0.1),
-          ),
+          bottom: BorderSide(color: Colors.white.withOpacity(0.1)),
         ),
       ),
       child: Row(
         children: [
           const Text(
             'Comments',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const Spacer(),
           IconButton(
@@ -131,9 +124,7 @@ class _CommentsSheetState extends State<CommentsSheet> {
                     children: [
                       Text(
                         comment.username,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(width: 8),
                       Text(
@@ -240,18 +231,11 @@ class _CommentsSheetState extends State<CommentsSheet> {
       ),
       decoration: BoxDecoration(
         color: AppTheme.cardBg,
-        border: Border(
-          top: BorderSide(
-            color: Colors.white.withOpacity(0.1),
-          ),
-        ),
+        border: Border(top: BorderSide(color: Colors.white.withOpacity(0.1))),
       ),
       child: Row(
         children: [
-          const CircleAvatar(
-            radius: 16,
-            child: Icon(Icons.person),
-          ),
+          const CircleAvatar(radius: 16, child: Icon(Icons.person)),
           const SizedBox(width: 12),
           Expanded(
             child: TextField(
@@ -330,7 +314,9 @@ class _CommentsSheetState extends State<CommentsSheet> {
         final parentIndex = _comments.indexOf(_replyingTo!);
         if (parentIndex != -1) {
           final updatedReplies = [..._replyingTo!.replies, newComment];
-          _comments[parentIndex] = _replyingTo!.copyWith(replies: updatedReplies);
+          _comments[parentIndex] = _replyingTo!.copyWith(
+            replies: updatedReplies,
+          );
         }
         _replyingTo = null;
       } else {

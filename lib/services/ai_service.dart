@@ -42,7 +42,7 @@ class AIMemeGenerator {
   static Map<String, String> generateMeme(String theme) {
     final random = Random();
     final template = _aiTemplates[random.nextInt(_aiTemplates.length)];
-    
+
     // Generate context-aware text based on theme
     final topText = _generateThematicText(theme, true);
     final bottomText = _generateThematicText(theme, false);
@@ -81,9 +81,16 @@ class AIMemeGenerator {
     };
 
     // Replace placeholders with theme-specific content
-    for (var placeholder in ['action', 'subject', 'consequence', 'reaction', 'twist']) {
+    for (var placeholder in [
+      'action',
+      'subject',
+      'consequence',
+      'reaction',
+      'twist',
+    ]) {
       if (pattern.contains('{$placeholder}')) {
-        final options = thematicContent[theme]?[placeholder] ?? ['does something'];
+        final options =
+            thematicContent[theme]?[placeholder] ?? ['does something'];
         pattern = pattern.replaceAll(
           '{$placeholder}',
           options[random.nextInt(options.length)],
@@ -105,10 +112,7 @@ class AIBattleManager {
     final votes1 = minVotes + random.nextInt(maxVotes - minVotes);
     final votes2 = minVotes + random.nextInt(maxVotes - minVotes);
 
-    return {
-      'meme1Votes': votes1,
-      'meme2Votes': votes2,
-    };
+    return {'meme1Votes': votes1, 'meme2Votes': votes2};
   }
 
   // Analyze meme quality
@@ -126,7 +130,7 @@ class AIBattleManager {
   ) {
     final quality1 = analyzeMemeQuality(meme1);
     final quality2 = analyzeMemeQuality(meme2);
-    
+
     final score1 = votes['meme1Votes']! * quality1;
     final score2 = votes['meme2Votes']! * quality2;
 
@@ -136,12 +140,13 @@ class AIBattleManager {
 
 class AITournamentManager {
   final Random _random = Random();
-  
+
   // Generate automatic tournament schedule
   Map<String, dynamic> generateTournament() {
-    final theme = AIMemeGenerator._themes[_random.nextInt(AIMemeGenerator._themes.length)];
+    final theme = AIMemeGenerator
+        ._themes[_random.nextInt(AIMemeGenerator._themes.length)];
     final participantCount = [16, 32, 64][_random.nextInt(3)];
-    
+
     return {
       'name': _generateTournamentName(theme),
       'theme': theme,

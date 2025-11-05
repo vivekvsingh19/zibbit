@@ -42,25 +42,15 @@ class StoriesBar extends StatelessWidget {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: AppTheme.cardBg,
-              border: Border.all(
-                color: AppTheme.vibrantBlue,
-                width: 2,
-              ),
+              border: Border.all(color: AppTheme.vibrantBlue, width: 2),
             ),
             child: const Center(
-              child: Icon(
-                Icons.add,
-                size: 30,
-                color: AppTheme.vibrantBlue,
-              ),
+              child: Icon(Icons.add, size: 30, color: AppTheme.vibrantBlue),
             ),
           ),
         ),
         const SizedBox(height: 4),
-        const Text(
-          'Add Story',
-          style: TextStyle(fontSize: 12),
-        ),
+        const Text('Add Story', style: TextStyle(fontSize: 12)),
       ],
     );
   }
@@ -80,16 +70,10 @@ class StoriesBar extends StatelessWidget {
                 gradient: story.isViewed
                     ? null
                     : LinearGradient(
-                        colors: [
-                          AppTheme.vibrantBlue,
-                          AppTheme.vibrantGreen,
-                        ],
+                        colors: [AppTheme.vibrantBlue, AppTheme.vibrantGreen],
                       ),
                 border: story.isViewed
-                    ? Border.all(
-                        color: Colors.grey.withOpacity(0.5),
-                        width: 2,
-                      )
+                    ? Border.all(color: Colors.grey.withOpacity(0.5), width: 2)
                     : null,
               ),
               padding: const EdgeInsets.all(2),
@@ -109,9 +93,7 @@ class StoriesBar extends StatelessWidget {
               story.username,
               style: TextStyle(
                 fontSize: 12,
-                color: story.isViewed
-                    ? Colors.grey
-                    : Colors.white,
+                color: story.isViewed ? Colors.grey : Colors.white,
               ),
             ),
           ],
@@ -123,9 +105,7 @@ class StoriesBar extends StatelessWidget {
   void _viewStory(BuildContext context, Story story) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => StoryViewScreen(story: story),
-      ),
+      MaterialPageRoute(builder: (context) => StoryViewScreen(story: story)),
     );
   }
 }
@@ -133,10 +113,7 @@ class StoriesBar extends StatelessWidget {
 class StoryViewScreen extends StatefulWidget {
   final Story story;
 
-  const StoryViewScreen({
-    super.key,
-    required this.story,
-  });
+  const StoryViewScreen({super.key, required this.story});
 
   @override
   State<StoryViewScreen> createState() => _StoryViewScreenState();
@@ -149,14 +126,13 @@ class _StoryViewScreenState extends State<StoryViewScreen>
   @override
   void initState() {
     super.initState();
-    _progressController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 5),
-    )..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          Navigator.pop(context);
-        }
-      });
+    _progressController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 5))
+          ..addStatusListener((status) {
+            if (status == AnimationStatus.completed) {
+              Navigator.pop(context);
+            }
+          });
     _progressController.forward();
   }
 
