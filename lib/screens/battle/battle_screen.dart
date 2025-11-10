@@ -255,7 +255,10 @@ class _BattleScreenState extends State<BattleScreen> {
               borderRadius: BorderRadius.circular(8),
               child: Stack(
                 children: [
-                  Container(height: 24, color: AppTheme.vibrantGreen.withOpacity(0.3)),
+                  Container(
+                    height: 24,
+                    color: AppTheme.vibrantGreen.withOpacity(0.3),
+                  ),
                   FractionallySizedBox(
                     widthFactor: progress1,
                     child: Container(
