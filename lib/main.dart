@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:memeapp/controllers/ai_controller.dart';
+import 'package:memeapp/controllers/theme_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:memeapp/core/app_theme.dart';
 import 'package:memeapp/screens/battle/battle_screen.dart' show BattleScreen;
@@ -12,8 +13,11 @@ import 'screens/profile/profile_screen.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => AIController(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AIController()),
+        ChangeNotifierProvider(create: (_) => ThemeController()),
+      ],
       child: const MemeMogulApp(),
     ),
   );
@@ -24,11 +28,19 @@ class MemeMogulApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Meme Mogul',
-      theme: AppTheme.themeData,
-      home: const MainScreen(),
-      debugShowCheckedModeBanner: false,
+    return Consumer<ThemeController>(
+      builder: (context, themeController, _) {
+        return MaterialApp(
+          title: 'Meme Mogul',
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: themeController.isDarkMode
+              ? ThemeMode.dark
+              : ThemeMode.light,
+          home: const MainScreen(),
+          debugShowCheckedModeBanner: false,
+        );
+      },
     );
   }
 }

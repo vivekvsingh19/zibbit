@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 class BottomNavScaffold extends StatefulWidget {
   final List<Widget> screens;
@@ -12,30 +13,30 @@ class BottomNavScaffold extends StatefulWidget {
 class _BottomNavScaffoldState extends State<BottomNavScaffold> {
   int _currentIndex = 0;
 
-  final List<BottomNavigationBarItem> _navItems = const [
+  List<BottomNavigationBarItem> get _navItems => [
     BottomNavigationBarItem(
-      icon: Icon(Icons.home_outlined),
-      activeIcon: Icon(Icons.home),
+      icon: const Icon(Iconsax.home),
+      activeIcon: const Icon(Iconsax.home),
       label: 'Home',
     ),
     BottomNavigationBarItem(
-      icon: Icon(Icons.sports_kabaddi_outlined),
-      activeIcon: Icon(Icons.sports_kabaddi),
+      icon: const Icon(Iconsax.game),
+      activeIcon: const Icon(Iconsax.game),
       label: 'Battle',
     ),
     BottomNavigationBarItem(
-      icon: Icon(Icons.emoji_events_outlined),
-      activeIcon: Icon(Icons.emoji_events),
+      icon: const Icon(Iconsax.award),
+      activeIcon: const Icon(Iconsax.award),
       label: 'Tournaments',
     ),
     BottomNavigationBarItem(
-      icon: Icon(Icons.person_outline),
-      activeIcon: Icon(Icons.person),
+      icon: const Icon(Iconsax.profile_circle),
+      activeIcon: const Icon(Iconsax.profile_circle),
       label: 'Profile',
     ),
     BottomNavigationBarItem(
-      icon: Icon(Icons.shopping_cart_outlined),
-      activeIcon: Icon(Icons.shopping_cart),
+      icon: const Icon(Iconsax.shopping_bag),
+      activeIcon: const Icon(Iconsax.shopping_bag),
       label: 'Shop',
     ),
   ];

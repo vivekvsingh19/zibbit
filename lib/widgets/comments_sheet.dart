@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:memeapp/core/app_theme.dart';
 import 'package:memeapp/models/comment.dart';
 import 'package:memeapp/models/meme_post.dart';
@@ -96,7 +97,7 @@ class _CommentsSheetState extends State<CommentsSheet> {
           ),
           const Spacer(),
           IconButton(
-            icon: const Icon(Icons.close),
+            icon: const Icon(Iconsax.close_circle),
             onPressed: () => Navigator.pop(context),
           ),
         ],
@@ -142,16 +143,14 @@ class _CommentsSheetState extends State<CommentsSheet> {
                   Row(
                     children: [
                       _buildActionButton(
-                        icon: comment.isLiked
-                            ? Icons.favorite
-                            : Icons.favorite_border,
+                        icon: comment.isLiked ? Iconsax.heart : Iconsax.heart,
                         label: comment.likes.toString(),
                         color: comment.isLiked ? Colors.red : null,
                         onTap: () => _likeComment(comment),
                       ),
                       const SizedBox(width: 16),
                       _buildActionButton(
-                        icon: Icons.reply,
+                        icon: Iconsax.redo,
                         label: 'Reply',
                         onTap: () => _startReply(comment),
                       ),

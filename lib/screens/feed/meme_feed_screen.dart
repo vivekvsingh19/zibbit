@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:memeapp/core/app_theme.dart';
 import 'package:memeapp/models/meme_post.dart';
+import 'package:iconsax_plus/iconsax_plus.dart';
 
 class MemeFeedScreen extends StatefulWidget {
   const MemeFeedScreen({super.key});
@@ -16,8 +17,8 @@ class _MemeFeedScreenState extends State<MemeFeedScreen> {
       id: '1',
       creatorId: 'user1',
       creatorName: 'MemeKing',
-      creatorAvatar: 'https://placeholder.com/avatar1',
-      memeImageUrl: 'https://placeholder.com/meme1',
+      creatorAvatar: 'https://i.pravatar.cc/150?img=1',
+      memeImageUrl: 'https://picsum.photos/600/600?random=1',
       caption: 'When the code finally works 😅 #coding #programming',
       createdAt: DateTime.now().subtract(const Duration(hours: 2)),
       likes: 1234,
@@ -28,8 +29,8 @@ class _MemeFeedScreenState extends State<MemeFeedScreen> {
       id: '2',
       creatorId: 'user2',
       creatorName: 'DankMaster',
-      creatorAvatar: 'https://placeholder.com/avatar2',
-      memeImageUrl: 'https://placeholder.com/meme2',
+      creatorAvatar: 'https://i.pravatar.cc/150?img=2',
+      memeImageUrl: 'https://picsum.photos/600/600?random=2',
       caption: 'Gaming life be like... #gaming #gamer',
       createdAt: DateTime.now().subtract(const Duration(hours: 4)),
       likes: 2345,
@@ -45,13 +46,13 @@ class _MemeFeedScreenState extends State<MemeFeedScreen> {
         title: const Text('Meme Feed'),
         actions: [
           IconButton(
-            icon: const Icon(Icons.add_box_outlined),
+            icon: const Icon((IconsaxPlusLinear.add_square)),
             onPressed: () {
               // TODO: Navigate to meme creation screen
             },
           ),
           IconButton(
-            icon: const Icon(Icons.message_outlined),
+            icon: const Icon(IconsaxPlusLinear.message),
             onPressed: () {
               // TODO: Navigate to messages screen
             },
@@ -71,139 +72,168 @@ class _MemeFeedScreenState extends State<MemeFeedScreen> {
   }
 
   Widget _buildMemePost(MemePost post) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
-      color: AppTheme.cardBg,
-      elevation: 0,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Post Header
-          ListTile(
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(post.creatorAvatar),
-              backgroundColor: AppTheme.vibrantBlue.withOpacity(0.2),
-            ),
-            title: Text(
-              post.creatorName,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            subtitle: Text(
-              _getTimeAgo(post.createdAt),
-              style: TextStyle(color: Colors.white.withOpacity(0.6)),
-            ),
-            trailing: _buildFollowButton(post),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Post Header
+        ListTile(
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(post.creatorAvatar),
+            backgroundColor: AppTheme.vibrantBlue.withOpacity(0.2),
           ),
+          title: Text(
+            post.creatorName,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          subtitle: Text(
+            _getTimeAgo(post.createdAt),
+            style: TextStyle(color: Colors.white.withOpacity(0.6)),
+          ),
+          trailing: _buildFollowButton(post),
+        ),
 
-          // Meme Image
-          AspectRatio(
-            aspectRatio: 1,
-            child: Container(
-              color: Colors.black12,
-              child: Image.network(
-                post.memeImageUrl,
-                fit: BoxFit.cover,
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Center(
-                    child: CircularProgressIndicator(
-                      value: loadingProgress.expectedTotalBytes != null
-                          ? loadingProgress.cumulativeBytesLoaded /
-                                loadingProgress.expectedTotalBytes!
-                          : null,
+        // Meme Image
+        AspectRatio(
+          aspectRatio: 1,
+          child: Container(
+            color: AppTheme.darkSurfaceLight,
+            child: Image.network(
+              post.memeImageUrl,
+              fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Center(
+                  child: CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                              loadingProgress.expectedTotalBytes!
+                        : null,
+                  ),
+                );
+              },
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: AppTheme.darkSurfaceLight,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.image_not_supported_outlined,
+                          size: 48,
+                          color: AppTheme.darkTextTertiary,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Image not available',
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+
+        // Action Buttons
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              _buildActionButton(
+                icon: post.isLiked
+                    ? (IconsaxPlusBold.heart)
+                    : (IconsaxPlusLinear.heart),
+                color: post.isLiked ? Colors.red : null,
+                onPressed: () => _toggleLike(post),
+              ),
+              _buildActionButton(
+                icon: IconsaxPlusLinear.message,
+                onPressed: () => _showComments(post),
+              ),
+              _buildActionButton(
+                icon: IconsaxPlusLinear.share,
+                onPressed: () => _shareMeme(post),
+              ),
+              const Spacer(),
+              _buildActionButton(
+                icon: post.isBookmarked
+                    ? IconsaxPlusBold.bookmark
+                    : IconsaxPlusLinear.bookmark,
+                onPressed: () => _toggleBookmark(post),
+              ),
+            ],
+          ),
+        ),
+
+        // Likes Count - Instagram Style (no box)
+        Padding(
+          padding: const EdgeInsets.only(
+            left: 12.0,
+            right: 12.0,
+            top: 8.0,
+            bottom: 4.0,
+          ),
+          child: Text(
+            '${post.likes} likes',
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+          ),
+        ),
+
+        // Caption and Tags
+        Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: '${post.creatorName} ',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(text: post.caption),
+                  ],
+                ),
+              ),
+              if (post.tags.isNotEmpty) const SizedBox(height: 4),
+              Wrap(
+                spacing: 4,
+                children: post.tags.map((tag) {
+                  return Text(
+                    '#$tag',
+                    style: TextStyle(
+                      color: AppTheme.vibrantBlue,
+                      fontWeight: FontWeight.w500,
                     ),
                   );
-                },
+                }).toList(),
               ),
-            ),
+            ],
           ),
+        ),
 
-          // Action Buttons
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                _buildActionButton(
-                  icon: post.isLiked ? Icons.favorite : Icons.favorite_border,
-                  color: post.isLiked ? Colors.red : null,
-                  onPressed: () => _toggleLike(post),
-                ),
-                _buildActionButton(
-                  icon: Icons.chat_bubble_outline,
-                  onPressed: () => _showComments(post),
-                ),
-                _buildActionButton(
-                  icon: Icons.share_outlined,
-                  onPressed: () => _shareMeme(post),
-                ),
-                const Spacer(),
-                _buildActionButton(
-                  icon: post.isBookmarked
-                      ? Icons.bookmark
-                      : Icons.bookmark_border,
-                  onPressed: () => _toggleBookmark(post),
-                ),
-              ],
-            ),
-          ),
-
-          // Likes Count
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        // Comments Preview
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          child: InkWell(
+            onTap: () => _showComments(post),
             child: Text(
-              '${post.likes} likes',
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              'View all ${post.comments} comments',
+              style: TextStyle(color: Colors.white.withOpacity(0.6)),
             ),
           ),
-
-          // Caption and Tags
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '${post.creatorName} ',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      TextSpan(text: post.caption),
-                    ],
-                  ),
-                ),
-                if (post.tags.isNotEmpty) const SizedBox(height: 4),
-                Wrap(
-                  spacing: 4,
-                  children: post.tags.map((tag) {
-                    return Text(
-                      '#$tag',
-                      style: TextStyle(
-                        color: AppTheme.vibrantBlue,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ],
-            ),
-          ),
-
-          // Comments Preview
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12.0),
-            child: InkWell(
-              onTap: () => _showComments(post),
-              child: Text(
-                'View all ${post.comments} comments',
-                style: TextStyle(color: Colors.white.withOpacity(0.6)),
-              ),
-            ),
-          ),
-          const SizedBox(height: 8),
-        ],
-      ),
+        ),
+        const SizedBox(height: 8),
+        Divider(
+          height: 16,
+          thickness: 0.5,
+          color: Colors.white.withOpacity(0.1),
+        ),
+      ],
     );
   }
 

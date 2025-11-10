@@ -15,6 +15,8 @@ class _BattleScreenState extends State<BattleScreen> {
     {
       'player1': 'MemeKing',
       'player2': 'DankMaster',
+      'meme1': 'https://picsum.photos/200/200?random=10',
+      'meme2': 'https://picsum.photos/200/200?random=11',
       'votes1': 45,
       'votes2': 38,
       'timeLeft': '2:30',
@@ -23,6 +25,8 @@ class _BattleScreenState extends State<BattleScreen> {
     {
       'player1': 'MemeLord',
       'player2': 'MemeQueen',
+      'meme1': 'https://picsum.photos/200/200?random=12',
+      'meme2': 'https://picsum.photos/200/200?random=13',
       'votes1': 67,
       'votes2': 72,
       'timeLeft': '1:45',
@@ -100,17 +104,17 @@ class _BattleScreenState extends State<BattleScreen> {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(0.2),
+                    color: AppTheme.vibrantBlue.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.timer, size: 16, color: Colors.red),
+                      Icon(Icons.timer, size: 16, color: AppTheme.vibrantBlue),
                       const SizedBox(width: 4),
                       Text(
                         battle['timeLeft'],
-                        style: const TextStyle(
-                          color: Colors.red,
+                        style: TextStyle(
+                          color: AppTheme.vibrantBlue,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -131,11 +135,38 @@ class _BattleScreenState extends State<BattleScreen> {
                       Container(
                         height: 150,
                         decoration: BoxDecoration(
-                          color: Colors.black26,
+                          color: AppTheme.darkSurfaceLight,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Center(
-                          child: Text(battle['player1'] + "'s Meme"),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            battle['meme1'],
+                            fit: BoxFit.cover,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value:
+                                      loadingProgress.expectedTotalBytes != null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                      : null,
+                                ),
+                              );
+                            },
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                color: AppTheme.darkSurfaceLight,
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.image_not_supported_outlined,
+                                    color: AppTheme.darkTextTertiary,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -152,7 +183,7 @@ class _BattleScreenState extends State<BattleScreen> {
                   width: 40,
                   height: 40,
                   decoration: BoxDecoration(
-                    color: AppTheme.vibrantBlue.withOpacity(0.2),
+                    color: AppTheme.vibrantBlue.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
                   child: Center(
@@ -173,11 +204,38 @@ class _BattleScreenState extends State<BattleScreen> {
                       Container(
                         height: 150,
                         decoration: BoxDecoration(
-                          color: Colors.black26,
+                          color: AppTheme.darkSurfaceLight,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Center(
-                          child: Text(battle['player2'] + "'s Meme"),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            battle['meme2'],
+                            fit: BoxFit.cover,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value:
+                                      loadingProgress.expectedTotalBytes != null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                      : null,
+                                ),
+                              );
+                            },
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                color: AppTheme.darkSurfaceLight,
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.image_not_supported_outlined,
+                                    color: AppTheme.darkTextTertiary,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -197,7 +255,7 @@ class _BattleScreenState extends State<BattleScreen> {
               borderRadius: BorderRadius.circular(8),
               child: Stack(
                 children: [
-                  Container(height: 24, color: Colors.red.withOpacity(0.3)),
+                  Container(height: 24, color: AppTheme.vibrantGreen.withOpacity(0.3)),
                   FractionallySizedBox(
                     widthFactor: progress1,
                     child: Container(
@@ -237,7 +295,7 @@ class _BattleScreenState extends State<BattleScreen> {
                   child: ElevatedButton(
                     onPressed: () => _vote(battle['player2']),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
+                      backgroundColor: AppTheme.vibrantGreen,
                     ),
                     child: const Text('Vote Right'),
                   ),

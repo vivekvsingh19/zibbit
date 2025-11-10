@@ -338,7 +338,6 @@ class _TournamentDetailsScreen extends StatelessWidget {
   const _TournamentDetailsScreen({
     required this.tournament,
     required this.brackets,
-    super.key,
   });
 
   @override

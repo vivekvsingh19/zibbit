@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:memeapp/core/app_theme.dart';
 import 'package:memeapp/models/story.dart';
 
@@ -45,7 +46,11 @@ class StoriesBar extends StatelessWidget {
               border: Border.all(color: AppTheme.vibrantBlue, width: 2),
             ),
             child: const Center(
-              child: Icon(Icons.add, size: 30, color: AppTheme.vibrantBlue),
+              child: const Icon(
+                Iconsax.add,
+                size: 30,
+                color: AppTheme.vibrantBlue,
+              ),
             ),
           ),
         ),
