@@ -162,7 +162,9 @@ class _MemeFeedScreenState extends State<MemeFeedScreen> {
                           children: [
                             // Shadow/Outline effect
                             Text(
-                              post.caption.replaceAll(RegExp(r'#\w+'), '').trim(),
+                              post.caption
+                                  .replaceAll(RegExp(r'#\w+'), '')
+                                  .trim(),
                               style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 14,
@@ -180,7 +182,9 @@ class _MemeFeedScreenState extends State<MemeFeedScreen> {
                             ),
                             // Main text
                             Text(
-                              post.caption.replaceAll(RegExp(r'#\w+'), '').trim(),
+                              post.caption
+                                  .replaceAll(RegExp(r'#\w+'), '')
+                                  .trim(),
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 14,
