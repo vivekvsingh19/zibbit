@@ -92,47 +92,117 @@ class _MemeFeedScreenState extends State<MemeFeedScreen> {
           trailing: _buildFollowButton(post),
         ),
 
-        // Meme Image
+        // Meme Image with Caption Overlay
         AspectRatio(
           aspectRatio: 1,
           child: Container(
             color: AppTheme.darkSurfaceLight,
-            child: Image.network(
-              post.memeImageUrl,
-              fit: BoxFit.cover,
-              loadingBuilder: (context, child, loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Center(
-                  child: CircularProgressIndicator(
-                    value: loadingProgress.expectedTotalBytes != null
-                        ? loadingProgress.cumulativeBytesLoaded /
-                              loadingProgress.expectedTotalBytes!
-                        : null,
-                  ),
-                );
-              },
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  color: AppTheme.darkSurfaceLight,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.image_not_supported_outlined,
-                          size: 48,
-                          color: AppTheme.darkTextTertiary,
+            child: Stack(
+              children: [
+                Image.network(
+                  post.memeImageUrl,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  },
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      color: AppTheme.darkSurfaceLight,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.image_not_supported_outlined,
+                              size: 48,
+                              color: AppTheme.darkTextTertiary,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Image not available',
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Image not available',
-                          style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    );
+                  },
+                ),
+                // Caption Overlay - Bottom Gradient
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: [
+                          Colors.black.withOpacity(0.8),
+                          Colors.black.withOpacity(0.4),
+                          Colors.transparent,
+                        ],
+                      ),
+                    ),
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Stack(
+                          children: [
+                            // Shadow/Outline effect
+                            Text(
+                              post.caption.replaceAll(RegExp(r'#\w+'), '').trim(),
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                shadows: [
+                                  Shadow(
+                                    offset: Offset(2, 2),
+                                    blurRadius: 2,
+                                    color: Colors.black,
+                                  ),
+                                ],
+                              ),
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            // Main text
+                            Text(
+                              post.caption.replaceAll(RegExp(r'#\w+'), '').trim(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                shadows: [
+                                  Shadow(
+                                    offset: Offset(1, 1),
+                                    blurRadius: 1,
+                                    color: Colors.black87,
+                                  ),
+                                ],
+                              ),
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ),
-                );
-              },
+                ),
+              ],
             ),
           ),
         ),
@@ -168,6 +238,24 @@ class _MemeFeedScreenState extends State<MemeFeedScreen> {
           ),
         ),
 
+        // Creator Name and Caption
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+          child: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: '${post.creatorName} ',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+
         // Likes Count - Instagram Style (no box)
         Padding(
           padding: const EdgeInsets.only(
@@ -182,39 +270,36 @@ class _MemeFeedScreenState extends State<MemeFeedScreen> {
           ),
         ),
 
-        // Caption and Tags
-        Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: '${post.creatorName} ',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    TextSpan(text: post.caption),
-                  ],
-                ),
-              ),
-              if (post.tags.isNotEmpty) const SizedBox(height: 4),
-              Wrap(
-                spacing: 4,
-                children: post.tags.map((tag) {
-                  return Text(
-                    '#$tag',
-                    style: TextStyle(
-                      color: AppTheme.vibrantBlue,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  );
-                }).toList(),
-              ),
-            ],
+        // Tags
+        if (post.tags.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12.0),
+            child: Wrap(
+              spacing: 4,
+              children: post.tags.map((tag) {
+                return RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '#',
+                        style: TextStyle(
+                          color: AppTheme.vibrantBlue,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      TextSpan(
+                        text: tag,
+                        style: TextStyle(
+                          color: AppTheme.vibrantBlue,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+            ),
           ),
-        ),
 
         // Comments Preview
         Padding(
