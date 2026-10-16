@@ -10,7 +10,7 @@ The UI has been completely redesigned with support for both **Light Mode** and *
 #### Dark Mode (Default)
 - **Primary Background**: Deep blue (`#0F111D`)
 - **Card Background**: Dark slate (`#1A1F35`)
-- **Surface Light**: Lighter slate (`#252C42`)
+- **Surface Light**: Lighter slate (`#252C42`)ff
 - **Text Primary**: Bright white (`#FAFAFA`)
 - **Text Secondary**: Light gray (`#B0B0B0`)
 - **Text Tertiary**: Medium gray (`#757575`)
