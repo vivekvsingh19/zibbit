@@ -3,7 +3,7 @@ import 'package:memeapp/controllers/ai_controller.dart';
 import 'package:memeapp/controllers/theme_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:memeapp/core/app_theme.dart';
-import 'package:memeapp/screens/battle/battle_screen.dart' show BattleScreen;
+import 'package:memeapp/screens/battle/battle_screen.dart' show BattleScreen;mmhghm
 import 'package:memeapp/screens/feed/meme_feed_screen.dart';
 import 'package:memeapp/screens/shop/shop_screen.dart';
 import 'package:memeapp/screens/tournament/tournament_screen.dart';
